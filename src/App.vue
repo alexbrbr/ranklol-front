@@ -1,31 +1,33 @@
 <template>
   <div id="app">
-    <lolrank-header></lolrank-header>
+    <md-toolbar class="md-dense">
+      <md-button class="md-icon-button">
+        <md-icon>menu</md-icon>
+      </md-button>
+
+      <h2 class="md-title" style="flex: 1">Ranklol</h2>
+
+      <md-button class="md-icon-button">
+        <md-icon>favorite</md-icon>
+      </md-button>
+    </md-toolbar>
+
     <hello></hello>
   </div>
 </template>
 
 <script>
 import Hello from './components/Hello'
-import Header from './components/lolrank-header'
 
 export default {
   name: 'app',
   components: {
-    Hello,
-    'lolrank-header': Header
+    Hello
   }
 }
 </script>
 
 <style>
-/*
-#AD343E pink
-#000000 black
-#0D1B2A blue
-#BA1200 red
-#F0EDEE white
-*/
 body {
   margin: 0 !important;
   padding: 0 !important;
@@ -33,7 +35,7 @@ body {
 #app {
   display: flex;
   flex-direction: column;
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: 'Roboto', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
