@@ -19,11 +19,48 @@
         </md-button>
       </md-card-content>
     </md-card>
-    <role-card
-     v-bind:role-name="mostPlayedRole"
-     v-bind:games-number-in-role="numberOfMostPlayedRole"
-     v-bind:total-games-number="100">
-    </role-card>
+    <div class="cards-list">
+      <role-card
+       v-bind:role-name="mostPlayedRole"
+       v-bind:games-number-in-role="numberOfMostPlayedRole"
+       v-bind:total-games-number="results.matchIds && results.matchIds.length">
+      </role-card>
+      <role-card
+       v-bind:role-name="mostPlayedRole"
+       v-bind:games-number-in-role="numberOfMostPlayedRole"
+       v-bind:total-games-number="results.matchIds && results.matchIds.length">
+      </role-card>
+      <role-card
+       v-bind:role-name="mostPlayedRole"
+       v-bind:games-number-in-role="numberOfMostPlayedRole"
+       v-bind:total-games-number="results.matchIds && results.matchIds.length">
+      </role-card>
+      <role-card
+       v-bind:role-name="mostPlayedRole"
+       v-bind:games-number-in-role="numberOfMostPlayedRole"
+       v-bind:total-games-number="results.matchIds && results.matchIds.length">
+      </role-card>
+      <role-card
+       v-bind:role-name="mostPlayedRole"
+       v-bind:games-number-in-role="numberOfMostPlayedRole"
+       v-bind:total-games-number="results.matchIds && results.matchIds.length">
+      </role-card>
+      <role-card
+       v-bind:role-name="mostPlayedRole"
+       v-bind:games-number-in-role="numberOfMostPlayedRole"
+       v-bind:total-games-number="results.matchIds && results.matchIds.length">
+      </role-card>
+      <role-card
+       v-bind:role-name="mostPlayedRole"
+       v-bind:games-number-in-role="numberOfMostPlayedRole"
+       v-bind:total-games-number="results.matchIds && results.matchIds.length">
+      </role-card>
+      <role-card
+       v-bind:role-name="mostPlayedRole"
+       v-bind:games-number-in-role="numberOfMostPlayedRole"
+       v-bind:total-games-number="results.matchIds && results.matchIds.length">
+      </role-card>
+    </div>
     <div>
       Most played day : {{numberOfMostPlayedDay}} matches on {{mostPlayedDay}}
     </div>
@@ -33,6 +70,7 @@
     <div v-else>
       {{results}}
     </div>
+    Ranklol isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
   </div>
 </template>
 
@@ -103,5 +141,12 @@ export default {
   .summoner-name-input {
     max-width: 10rem;
     margin: 0 auto 0.5rem;
+  }
+
+  .cards-list {
+    display: flex;
+    margin: 1rem;
+    flex-wrap: wrap;
+    justify-content: space-around;
   }
 </style>
