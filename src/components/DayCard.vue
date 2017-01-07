@@ -46,6 +46,6 @@ export default {
   }
   .day-card__header {
     background-color: #b71c1c;
-    color: white;
+    color: rgba(255, 255, 255, .87);
   }
 </style>
