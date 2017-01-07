@@ -1,14 +1,25 @@
 <template>
   <div>
-    <md-input-container>
-      <label>Summoner name</label>
-      <md-input v-model="summonerName"></md-input>
-    </md-input-container>
-    <button
-     type="button"
-     v-on:click="loadSummonerData">
-     Load summoner data
-    </button>
+    <md-card class="card-margin">
+      <md-whiteframe>
+      <md-card-header>
+        <div class="md-title">Choose which summoner's ranked games you want to see</div>
+        <div class="md-subhead">Only ranked games from Season 7 in EUW will be loaded</div>
+      </md-card-header>
+    </md-whiteframe>
+
+      <md-card-content>
+        <md-input-container>
+          <label>Summoner name</label>
+          <md-input v-model="summonerName"></md-input>
+        </md-input-container>
+        <md-button class="md-raised md-primary"
+         v-on:click="loadSummonerData">
+         Load summoner data
+        </md-button>
+      </md-card-content>
+    </md-card>
+
     <div>
       Most played role : {{numberOfMostPlayedRole}} matches as {{mostPlayedRole}}
     </div>
@@ -47,7 +58,7 @@ export default {
   data () {
     return {
       results: {},
-      summonerName: 'UOL Vizicsacsi'
+      summonerName: ''
     }
   },
   computed: {
@@ -80,4 +91,7 @@ export default {
 </script>
 
 <style scoped>
+  .card-margin {
+    margin: 1rem;
+  }
 </style>
