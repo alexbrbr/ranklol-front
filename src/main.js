@@ -6,9 +6,22 @@ import 'vue-material/dist/vue-material.css'
 
 import App from './App'
 
-/* eslint-disable no-new */
 Vue.use(VueMaterial)
+Vue.material.registerTheme('ranklol', {
+  primary: {
+    color: 'red',
+    hue: 900
+  },
+  accent: 'indigo',
+  warn: 'deep-orange',
+  background: {
+    color: 'grey',
+    hue: 300
+  }
+})
+Vue.material.setCurrentTheme('ranklol')
 
+/* eslint-disable no-new */
 new Vue({
   el: '#app',
   template: '<App/>',
