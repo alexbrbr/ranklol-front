@@ -2,11 +2,11 @@
   <div>
     <md-card class="card-margin">
       <md-whiteframe>
-      <md-card-header>
-        <div class="md-title">Choose which summoner's ranked games you want to see</div>
-        <div class="md-subhead">Only ranked games from Season 7 in EUW will be loaded</div>
-      </md-card-header>
-    </md-whiteframe>
+        <md-card-header>
+          <div class="md-title">Choose which summoner's ranked games you want to see</div>
+          <div class="md-subhead">Only ranked games from Season 7 in EUW will be loaded</div>
+        </md-card-header>
+      </md-whiteframe>
 
       <md-card-content>
         <md-input-container class="summoner-name-input">
@@ -19,10 +19,11 @@
         </md-button>
       </md-card-content>
     </md-card>
-
-    <div>
-      Most played role : {{numberOfMostPlayedRole}} matches as {{mostPlayedRole}}
-    </div>
+    <role-card
+     v-bind:role-name="mostPlayedRole"
+     v-bind:games-number-in-role="numberOfMostPlayedRole"
+     v-bind:total-games-number="100">
+    </role-card>
     <div>
       Most played day : {{numberOfMostPlayedDay}} matches on {{mostPlayedDay}}
     </div>
@@ -37,6 +38,7 @@
 
 <script>
 import axios from 'axios'
+import RoleCard from './RoleCard'
 
 function fetchSummoner (summonerName) {
   return axios.get(`http://localhost:4000/api/${summonerName}`)
@@ -47,6 +49,9 @@ export default {
     fetchSummoner(this.summonerName).then(results => {
       this.results = results.data
     })
+  },
+  components: {
+    RoleCard
   },
   methods: {
     loadSummonerData () {
