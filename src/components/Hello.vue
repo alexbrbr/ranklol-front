@@ -56,7 +56,7 @@ import DayCard from './DayCard'
 import ChampionCard from './ChampionCard'
 
 function fetchSummoner (summonerName) {
-  return axios.get(`http://localhost:4000/api/${summonerName}`)
+  return axios.get(`https://ranklol-server.herokuapp.com/api/${summonerName}`)
 }
 export default {
   name: 'hello',
