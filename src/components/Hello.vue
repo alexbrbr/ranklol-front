@@ -9,7 +9,7 @@
     </md-whiteframe>
 
       <md-card-content>
-        <md-input-container>
+        <md-input-container class="summoner-name-input">
           <label>Summoner name</label>
           <md-input v-model="summonerName"></md-input>
         </md-input-container>
@@ -93,5 +93,10 @@ export default {
 <style scoped>
   .card-margin {
     margin: 1rem;
+  }
+
+  .summoner-name-input {
+    max-width: 10rem;
+    margin: 0 auto 0.5rem;
   }
 </style>
