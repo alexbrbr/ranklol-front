@@ -35,6 +35,7 @@ export default {
 
 <style>
 body {
+  display: flex;
   margin: 0 !important;
   padding: 0 !important;
 }

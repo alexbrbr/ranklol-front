@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class='view'>
     <md-card class="card-margin">
       <md-whiteframe>
         <md-card-header>
@@ -19,64 +19,41 @@
         </md-button>
       </md-card-content>
     </md-card>
-    <div class="cards-list">
-      <role-card
-       v-bind:role-name="mostPlayedRole"
-       v-bind:games-number-in-role="numberOfMostPlayedRole"
-       v-bind:total-games-number="results.matchIds && results.matchIds.length">
-      </role-card>
-      <role-card
-       v-bind:role-name="mostPlayedRole"
-       v-bind:games-number-in-role="numberOfMostPlayedRole"
-       v-bind:total-games-number="results.matchIds && results.matchIds.length">
-      </role-card>
-      <role-card
-       v-bind:role-name="mostPlayedRole"
-       v-bind:games-number-in-role="numberOfMostPlayedRole"
-       v-bind:total-games-number="results.matchIds && results.matchIds.length">
-      </role-card>
-      <role-card
-       v-bind:role-name="mostPlayedRole"
-       v-bind:games-number-in-role="numberOfMostPlayedRole"
-       v-bind:total-games-number="results.matchIds && results.matchIds.length">
-      </role-card>
-      <role-card
-       v-bind:role-name="mostPlayedRole"
-       v-bind:games-number-in-role="numberOfMostPlayedRole"
-       v-bind:total-games-number="results.matchIds && results.matchIds.length">
-      </role-card>
-      <role-card
-       v-bind:role-name="mostPlayedRole"
-       v-bind:games-number-in-role="numberOfMostPlayedRole"
-       v-bind:total-games-number="results.matchIds && results.matchIds.length">
-      </role-card>
-      <role-card
-       v-bind:role-name="mostPlayedRole"
-       v-bind:games-number-in-role="numberOfMostPlayedRole"
-       v-bind:total-games-number="results.matchIds && results.matchIds.length">
-      </role-card>
-      <role-card
-       v-bind:role-name="mostPlayedRole"
-       v-bind:games-number-in-role="numberOfMostPlayedRole"
-       v-bind:total-games-number="results.matchIds && results.matchIds.length">
-      </role-card>
+    <div class="results">
+      <div v-if="!results.matchIds">
+        Please select a summoner
+      </div>
+      <div v-else>
+        <div class="cards-list">
+          <role-card
+           v-bind:role-name="mostPlayedRole"
+           v-bind:games-number-in-role="numberOfMostPlayedRole"
+           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+          </role-card>
+          <day-card
+           v-bind:day-name="mostPlayedDay"
+           v-bind:games-number-in-day="numberOfMostPlayedDay"
+           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+         </day-card>
+          <champion-card
+           v-bind:champion-name="mostPlayedChampion"
+           v-bind:games-number-for-champion="numberOfMostPlayedChampion"
+           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+         </champion-card>
+        </div>
+      </div>
     </div>
-    <div>
-      Most played day : {{numberOfMostPlayedDay}} matches on {{mostPlayedDay}}
+    <div class="footer">
+      Ranklol isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
     </div>
-    <div v-if="!results">
-      Loading
-    </div>
-    <div v-else>
-      {{results}}
-    </div>
-    Ranklol isn’t endorsed by Riot Games and doesn’t reflect the views or opinions of Riot Games or anyone officially involved in producing or managing League of Legends. League of Legends and Riot Games are trademarks or registered trademarks of Riot Games, Inc. League of Legends © Riot Games, Inc.
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import RoleCard from './RoleCard'
+import DayCard from './DayCard'
+import ChampionCard from './ChampionCard'
 
 function fetchSummoner (summonerName) {
   return axios.get(`http://localhost:4000/api/${summonerName}`)
@@ -89,7 +66,9 @@ export default {
     })
   },
   components: {
-    RoleCard
+    RoleCard,
+    DayCard,
+    ChampionCard
   },
   methods: {
     loadSummonerData () {
@@ -128,12 +107,29 @@ export default {
     },
     numberOfMostPlayedDay: function () {
       return this.results.daysData && this.results.daysData[this.mostPlayedDay]
+    },
+    mostPlayedChampion: function () {
+      return this.results.championData && Object
+        .keys(this.results.championData)
+        .reduce((mostPlayed, curr) => {
+          return this.results.championData[curr] > this.results.championData[mostPlayed]
+          ? curr
+          : mostPlayed
+        })
+    },
+    numberOfMostPlayedChampion: function () {
+      return this.results.championData && this.results.championData[this.mostPlayedChampion]
     }
   }
 }
 </script>
 
 <style scoped>
+  .view {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
   .card-margin {
     margin: 1rem;
   }
@@ -148,5 +144,14 @@ export default {
     margin: 1rem;
     flex-wrap: wrap;
     justify-content: space-around;
+  }
+
+  .results {
+    flex: 1;
+  }
+
+  .footer {
+    margin: 1rem 1rem 0;
+    font-size: 11px;
   }
 </style>
