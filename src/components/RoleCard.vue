@@ -8,7 +8,7 @@
 
     <md-card-content>
       <md-avatar class="md-large">
-       <img :src="roleIcon">
+        <img :src="roleIcon">
       </md-avatar>
       <div class="md-subhead">
         Most played role during season

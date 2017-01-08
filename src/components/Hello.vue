@@ -38,6 +38,7 @@
           <champion-card
            v-bind:champion-name="mostPlayedChampion"
            v-bind:games-number-for-champion="numberOfMostPlayedChampion"
+           v-bind:champions="champions"
            v-bind:total-games-number="results.matchIds && results.matchIds.length">
          </champion-card>
         </div>
@@ -57,12 +58,17 @@ import ChampionCard from './ChampionCard'
 
 function fetchSummoner (summonerName) {
   return axios.get(`https://ranklol-server.herokuapp.com/api/summoner/${summonerName}`)
+  // return axios.get(`http://localhost:4000/api/summoner/${summonerName}`)
+}
+function fetchChampions () {
+  return axios.get('https://ranklol-server.herokuapp.com/api/champions')
+  // return axios.get('http://localhost:4000/api/champions')
 }
 export default {
   name: 'hello',
   created () {
-    fetchSummoner(this.summonerName).then(results => {
-      this.results = results.data
+    fetchChampions().then(championsRes => {
+      this.champions = championsRes.data
     })
   },
   components: {

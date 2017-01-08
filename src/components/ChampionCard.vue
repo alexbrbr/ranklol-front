@@ -7,6 +7,9 @@
     </md-whiteframe>
 
     <md-card-content>
+      <md-avatar class="md-large">
+        <img :src="championImageUrl">
+      </md-avatar>
       <div class="md-subhead">
         Most played champion during season
       </div>
@@ -21,7 +24,8 @@ export default {
   props: [
     'championName',
     'gamesNumberForChampion',
-    'totalGamesNumber'
+    'totalGamesNumber',
+    'champions'
   ],
   created () {
   },
@@ -32,6 +36,11 @@ export default {
     }
   },
   computed: {
+    championImageUrl: function () {
+      return this.champions
+        .find(champion => champion.name === this.championName)
+        .image
+    }
   }
 }
 </script>
