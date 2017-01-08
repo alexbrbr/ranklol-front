@@ -56,13 +56,18 @@ import RoleCard from './RoleCard'
 import DayCard from './DayCard'
 import ChampionCard from './ChampionCard'
 
+let apiUrl = ''
+if (process.env.NODE_ENV === 'development') {
+  apiUrl = 'http://localhost:4000/api'
+} else if (process.env.NODE_ENV === 'production') {
+  apiUrl = 'https://ranklol-server.herokuapp.com/api'
+}
+
 function fetchSummoner (summonerName) {
-  return axios.get(`https://ranklol-server.herokuapp.com/api/summoner/${summonerName}`)
-  // return axios.get(`http://localhost:4000/api/summoner/${summonerName}`)
+  return axios.get(`${apiUrl}/summoner/${summonerName}`)
 }
 function fetchChampions () {
-  return axios.get('https://ranklol-server.herokuapp.com/api/champions')
-  // return axios.get('http://localhost:4000/api/champions')
+  return axios.get(`${apiUrl}/champions`) // eslint-disable-line
 }
 export default {
   name: 'hello',
