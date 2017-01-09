@@ -11,7 +11,7 @@
         <img :src="championImageUrl">
       </md-avatar>
       <div class="md-subhead">
-        Most played champion during season
+        #{{index + 1}} played champion during season
       </div>
       {{gamesNumberForChampion}} out of {{totalGamesNumber}} matches
     </md-card-content>
@@ -25,7 +25,8 @@ export default {
     'championName',
     'gamesNumberForChampion',
     'totalGamesNumber',
-    'champions'
+    'champions',
+    'index'
   ],
   created () {
   },

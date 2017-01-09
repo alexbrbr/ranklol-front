@@ -34,14 +34,13 @@
            v-bind:day-name="mostPlayedDay"
            v-bind:games-number-in-day="numberOfMostPlayedDay"
            v-bind:total-games-number="results.matchIds && results.matchIds.length">
-         </day-card>
-          <champion-card
-           v-bind:champion-name="mostPlayedChampion"
-           v-bind:games-number-for-champion="numberOfMostPlayedChampion"
-           v-bind:champions="champions"
-           v-bind:total-games-number="results.matchIds && results.matchIds.length">
-         </champion-card>
+          </day-card>
         </div>
+        <champion-list
+         v-bind:match-ids="results.matchIds"
+         v-bind:champion-list="results.championData"
+         v-bind:champions="champions">
+        </champion-list>
       </div>
     </div>
     <div class="footer">
@@ -54,7 +53,7 @@
 import axios from 'axios'
 import RoleCard from './RoleCard'
 import DayCard from './DayCard'
-import ChampionCard from './ChampionCard'
+import ChampionList from './ChampionList'
 
 let apiUrl = ''
 if (process.env.NODE_ENV === 'development') {
@@ -79,7 +78,7 @@ export default {
   components: {
     RoleCard,
     DayCard,
-    ChampionCard
+    ChampionList
   },
   methods: {
     loadSummonerData () {
@@ -118,18 +117,6 @@ export default {
     },
     numberOfMostPlayedDay: function () {
       return this.results.daysData && this.results.daysData[this.mostPlayedDay]
-    },
-    mostPlayedChampion: function () {
-      return this.results.championData && Object
-        .keys(this.results.championData)
-        .reduce((mostPlayed, curr) => {
-          return this.results.championData[curr] > this.results.championData[mostPlayed]
-          ? curr
-          : mostPlayed
-        })
-    },
-    numberOfMostPlayedChampion: function () {
-      return this.results.championData && this.results.championData[this.mostPlayedChampion]
     }
   }
 }
