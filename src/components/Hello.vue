@@ -38,6 +38,11 @@
            v-bind:games-number-in-day="numberOfMostPlayedDay"
            v-bind:total-games-number="results.matchIds && results.matchIds.length">
           </day-card>
+          <day-of-week-card
+           v-bind:day-of-week-name="mostPlayedDayOfWeek"
+           v-bind:games-number-in-day-of-week="numberOfMostPlayedDayOfWeek"
+           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+         </day-of-week-card>
         </div>
         <champion-list
          v-bind:match-ids="results.matchIds"
@@ -54,8 +59,10 @@
 
 <script>
 import axios from 'axios'
+
 import RoleCard from './RoleCard'
 import DayCard from './DayCard'
+import DayOfWeekCard from './DayOfWeekCard'
 import ChampionList from './ChampionList'
 
 let apiUrl = ''
@@ -81,7 +88,8 @@ export default {
   components: {
     RoleCard,
     DayCard,
-    ChampionList
+    ChampionList,
+    DayOfWeekCard
   },
   methods: {
     loadSummonerData () {
@@ -124,6 +132,18 @@ export default {
     },
     numberOfMostPlayedDay: function () {
       return this.results.daysData && this.results.daysData[this.mostPlayedDay]
+    },
+    mostPlayedDayOfWeek: function () {
+      return this.results.daysOfWeekData && Object
+        .keys(this.results.daysOfWeekData)
+        .reduce((mostPlayed, curr) => {
+          return this.results.daysOfWeekData[curr] > this.results.daysOfWeekData[mostPlayed]
+          ? curr
+          : mostPlayed
+        })
+    },
+    numberOfMostPlayedDayOfWeek: function () {
+      return this.results.daysOfWeekData && this.results.daysOfWeekData[this.mostPlayedDayOfWeek]
     }
   }
 }
