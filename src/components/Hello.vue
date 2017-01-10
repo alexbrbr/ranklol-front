@@ -20,8 +20,11 @@
       </md-card-content>
     </md-card>
     <div class="results">
-      <div v-if="!results.matchIds">
+      <div v-if="!results.matchIds && !results.errMessage">
         Please select a summoner
+      </div>
+      <div v-else-if="results.errMessage">
+        {{this.results.errMessage}}
       </div>
       <div v-else>
         <div class="cards-list">
@@ -82,9 +85,13 @@ export default {
   },
   methods: {
     loadSummonerData () {
-      fetchSummoner(this.summonerName).then(results => {
-        this.results = results.data
-      })
+      fetchSummoner(this.summonerName)
+        .then(results => {
+          this.results = results.data
+        })
+        .catch(err => {
+          this.results = err.response.data
+        })
     }
   },
   data () {
