@@ -4,7 +4,7 @@
       <md-whiteframe>
         <md-card-header>
           <div class="md-title">Choose which summoner's ranked games you want to see</div>
-          <div class="md-subhead">Only ranked games from Season 7 in EUW will be loaded</div>
+          <div class="md-subhead">Only ranked games from Season 6, PreSeason 7 & Season 7 in EUW will be loaded</div>
         </md-card-header>
       </md-whiteframe>
 
