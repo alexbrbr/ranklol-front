@@ -13,7 +13,7 @@
       <div class="md-subhead">
         #{{index + 1}} played champion during season
       </div>
-      {{gamesNumberForChampion}} out of {{totalGamesNumber}} matches
+      {{gamesNumberForChampion}} out of {{totalGamesNumber}} matches ({{percentage}}%)
     </md-card-content>
   </md-card>
 </template>
@@ -46,6 +46,9 @@ export default {
       return this.champions
         .find(champion => champion.id === parseInt(this.championId))
         .name
+    },
+    percentage () {
+      return Math.round((this.gamesNumberForChampion * 100 / this.totalGamesNumber) * 100) / 100
     }
   }
 }
