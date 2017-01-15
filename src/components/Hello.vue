@@ -3,7 +3,7 @@
     <md-card class="card-margin">
       <md-whiteframe>
         <md-card-header>
-          <div class="md-title">Choose which summoner's ranked games you want to see</div>
+          <div class="md-title">Look at ranked games from any summoner in EUW</div>
           <div class="md-subhead">Only ranked games from Season 6, PreSeason 7 & Season 7 in EUW will be loaded</div>
         </md-card-header>
       </md-whiteframe>
@@ -16,7 +16,7 @@
           </md-input-container>
           <md-button class="md-raised md-primary"
            v-on:click="loadSummonerData(summonerName)">
-           Load summoner data
+           Load ranked games
           </md-button>
         </div>
         <div class="summoner-choosing-container__examples">
