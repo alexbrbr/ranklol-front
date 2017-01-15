@@ -21,14 +21,16 @@
         </div>
         <div class="summoner-choosing-container__examples">
           Or look at the stats from one of these players :
-          <md-button class="md-raised md-primary"
-           v-on:click="loadSummonerData('UOL Vizicsacsi')">
-           UOL Vizicsacsi
-          </md-button>
-          <md-button class="md-raised md-primary"
-           v-on:click="loadSummonerData('FNC Rekkles')">
-           FNC Rekkles
-          </md-button>
+          <div>
+            <md-button class="md-raised md-primary"
+             v-on:click="loadSummonerData('UOL Vizicsacsi')">
+             UOL Vizicsacsi
+            </md-button>
+            <md-button class="md-raised md-primary"
+             v-on:click="loadSummonerData('FNC Rekkles')">
+             FNC Rekkles
+            </md-button>
+          </div>
         </div>
       </md-card-content>
     </md-card>
