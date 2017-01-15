@@ -8,18 +8,35 @@
         </md-card-header>
       </md-whiteframe>
 
-      <md-card-content>
-        <md-input-container class="summoner-name-input">
-          <label>Summoner name</label>
-          <md-input v-model="summonerName"></md-input>
-        </md-input-container>
-        <md-button class="md-raised md-primary"
-         v-on:click="loadSummonerData">
-         Load summoner data
-        </md-button>
+      <md-card-content class="summoner-choosing-container">
+        <div class="summoner-choosing-container__input">
+          <md-input-container class="summoner-name-input">
+            <label>Summoner name</label>
+            <md-input v-model="summonerName"></md-input>
+          </md-input-container>
+          <md-button class="md-raised md-primary"
+           v-on:click="loadSummonerData(summonerName)">
+           Load summoner data
+          </md-button>
+        </div>
+        <div class="summoner-choosing-container__examples">
+          Or look at the stats from one of these players :
+          <md-button class="md-raised md-primary"
+           v-on:click="loadSummonerData('UOL Vizicsacsi')">
+           UOL Vizicsacsi
+          </md-button>
+          <md-button class="md-raised md-primary"
+           v-on:click="loadSummonerData('FNC Rekkles')">
+           FNC Rekkles
+          </md-button>
+        </div>
       </md-card-content>
     </md-card>
     <div class="results">
+      <md-spinner
+       v-if="loading"
+       md-indeterminate>
+      </md-spinner>
       <div v-if="!results.matchIds && !results.errMessage">
         Please select a summoner
       </div>
@@ -92,20 +109,27 @@ export default {
     DayOfWeekCard
   },
   methods: {
-    loadSummonerData () {
-      fetchSummoner(this.summonerName)
+    loadSummonerData (name) {
+      if (this.loading) {
+        return
+      }
+      this.loading = true
+      fetchSummoner(name)
         .then(results => {
           this.results = results.data
+          this.loading = false
         })
         .catch(err => {
           this.results = err.response.data
+          this.loading = false
         })
     }
   },
   data () {
     return {
       results: {},
-      summonerName: ''
+      summonerName: '',
+      loading: false
     }
   },
   computed: {
@@ -178,5 +202,15 @@ export default {
   .footer {
     margin: 1rem 1rem 0;
     font-size: 11px;
+  }
+
+  .summoner-choosing-container {
+    display: flex;
+  }
+  .summoner-choosing-container__input {
+    flex: 1;
+  }
+  .summoner-choosing-container__examples {
+    flex: 1;
   }
 </style>
