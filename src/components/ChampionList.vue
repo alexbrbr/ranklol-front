@@ -2,7 +2,7 @@
   <div class="cards-list">
     <champion-card
      v-for="(champion, index) in championsOrdered"
-     v-bind:champion-name="champion.name"
+     v-bind:champion-id="champion.id"
      v-bind:games-number-for-champion="champion.numberOfTimesPlayed"
      v-bind:champions="champions"
      v-bind:index="index"
@@ -29,17 +29,12 @@ export default {
     }
   },
   computed: {
-    // championImageUrl: function () {
-    //   return this.champions
-    //     .find(champion => champion.name === this.championName)
-    //     .image
-    // },
     championsOrdered: function () {
       return Object
         .keys(this.championList)
-        .map(name => ({
-          name,
-          numberOfTimesPlayed: this.championList[name]
+        .map(id => ({
+          id,
+          numberOfTimesPlayed: this.championList[id]
         }))
         .sort((championA, championB) => {
           return championB.numberOfTimesPlayed - championA.numberOfTimesPlayed

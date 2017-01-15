@@ -22,7 +22,7 @@
 export default {
   name: 'myComponent',
   props: [
-    'championName',
+    'championId',
     'gamesNumberForChampion',
     'totalGamesNumber',
     'champions',
@@ -39,8 +39,13 @@ export default {
   computed: {
     championImageUrl: function () {
       return this.champions
-        .find(champion => champion.name === this.championName)
+        .find(champion => champion.id === parseInt(this.championId))
         .image
+    },
+    championName: function () {
+      return this.champions
+        .find(champion => champion.id === parseInt(this.championId))
+        .name
     }
   }
 }
