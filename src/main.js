@@ -6,6 +6,14 @@ import 'vue-material/dist/vue-material.css'
 
 import App from './App'
 
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').then(function (registration) {
+    console.log('yay ! loaded')
+  }).catch(function (error) {
+    console.log('nay: ', error)
+  })
+}
+
 Vue.use(VueMaterial)
 Vue.material.registerTheme('ranklol', {
   primary: {
