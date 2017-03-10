@@ -61,13 +61,16 @@
            v-bind:day-of-week-name="mostPlayedDayOfWeek"
            v-bind:games-number-in-day-of-week="numberOfMostPlayedDayOfWeek"
            v-bind:total-games-number="results.matchIds && results.matchIds.length">
-         </day-of-week-card>
-        </div>
-        <champion-list
-         v-bind:match-ids="results.matchIds"
-         v-bind:champion-list="results.championData"
-         v-bind:champions="champions">
-        </champion-list>
+          </day-of-week-card>
+          <champion-card
+           v-for="(champion, index) in championsOrdered"
+           v-bind:champion-id="champion.id"
+           v-bind:games-number-for-champion="champion.numberOfTimesPlayed"
+           v-bind:champions="champions"
+           v-bind:index="index"
+           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+         </champion-card>
+       </div>
       </div>
     </div>
     <div class="footer">
@@ -82,7 +85,7 @@ import axios from 'axios'
 import RoleCard from './RoleCard'
 import DayCard from './DayCard'
 import DayOfWeekCard from './DayOfWeekCard'
-import ChampionList from './ChampionList'
+import ChampionCard from './ChampionCard'
 
 let apiUrl = ''
 if (process.env.NODE_ENV === 'development') {
@@ -107,7 +110,7 @@ export default {
   components: {
     RoleCard,
     DayCard,
-    ChampionList,
+    ChampionCard,
     DayOfWeekCard
   },
   methods: {
@@ -170,6 +173,29 @@ export default {
     },
     numberOfMostPlayedDayOfWeek: function () {
       return this.results.daysOfWeekData && this.results.daysOfWeekData[this.mostPlayedDayOfWeek]
+    },
+    championsOrdered: function () {
+      return Object
+        .keys(this.results.championData)
+        .map(id => ({
+          id,
+          numberOfTimesPlayed: this.results.championData[id]
+        }))
+        .sort((championA, championB) => {
+          return championB.numberOfTimesPlayed - championA.numberOfTimesPlayed
+        })
+    },
+    mostPlayedChampion: function () {
+      return this.results.championData && Object
+        .keys(this.results.championData)
+        .reduce((mostPlayed, curr) => {
+          return this.results.championData[curr] > this.results.championData[mostPlayed]
+          ? curr
+          : mostPlayed
+        })
+    },
+    numberOfMostPlayedChampion: function () {
+      return this.results.championData && this.results.championData[this.mostPlayedChampion]
     }
   }
 }

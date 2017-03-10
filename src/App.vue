@@ -40,6 +40,7 @@ body {
   padding: 0 !important;
 }
 #app {
+  width: 100%;
   display: flex;
   flex-direction: column;
   font-family: 'Roboto', Helvetica, Arial, sans-serif;
