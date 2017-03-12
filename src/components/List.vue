@@ -81,6 +81,7 @@
 
 <script>
 import axios from 'axios'
+import listService from '../services/listService'
 
 import RoleCard from './RoleCard'
 import DayCard from './DayCard'
@@ -139,63 +140,25 @@ export default {
   },
   computed: {
     mostPlayedRole: function () {
-      return this.results.rolesData && Object
-        .keys(this.results.rolesData)
-        .reduce((mostPlayed, curr) => {
-          return this.results.rolesData[curr] > this.results.rolesData[mostPlayed]
-            ? curr
-            : mostPlayed
-        })
+      return listService.mostPlayed(this.results.rolesData)
     },
     numberOfMostPlayedRole: function () {
       return this.results.rolesData && this.results.rolesData[this.mostPlayedRole]
     },
     mostPlayedDay: function () {
-      return this.results.daysData && Object
-        .keys(this.results.daysData)
-        .reduce((mostPlayed, curr) => {
-          return this.results.daysData[curr] > this.results.daysData[mostPlayed]
-          ? curr
-          : mostPlayed
-        })
+      return listService.mostPlayed(this.results.daysData)
     },
     numberOfMostPlayedDay: function () {
       return this.results.daysData && this.results.daysData[this.mostPlayedDay]
     },
     mostPlayedDayOfWeek: function () {
-      return this.results.daysOfWeekData && Object
-        .keys(this.results.daysOfWeekData)
-        .reduce((mostPlayed, curr) => {
-          return this.results.daysOfWeekData[curr] > this.results.daysOfWeekData[mostPlayed]
-          ? curr
-          : mostPlayed
-        })
+      return listService.mostPlayed(this.results.daysOfWeekData)
     },
     numberOfMostPlayedDayOfWeek: function () {
       return this.results.daysOfWeekData && this.results.daysOfWeekData[this.mostPlayedDayOfWeek]
     },
     championsOrdered: function () {
-      return Object
-        .keys(this.results.championData)
-        .map(id => ({
-          id,
-          numberOfTimesPlayed: this.results.championData[id]
-        }))
-        .sort((championA, championB) => {
-          return championB.numberOfTimesPlayed - championA.numberOfTimesPlayed
-        })
-    },
-    mostPlayedChampion: function () {
-      return this.results.championData && Object
-        .keys(this.results.championData)
-        .reduce((mostPlayed, curr) => {
-          return this.results.championData[curr] > this.results.championData[mostPlayed]
-          ? curr
-          : mostPlayed
-        })
-    },
-    numberOfMostPlayedChampion: function () {
-      return this.results.championData && this.results.championData[this.mostPlayedChampion]
+      return listService.orderChampions(this.results.championData)
     }
   }
 }
