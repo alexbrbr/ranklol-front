@@ -20,20 +20,11 @@
 
 <script>
 export default {
-  name: 'myComponent',
   props: [
     'roleName',
     'gamesNumberInRole',
     'totalGamesNumber'
   ],
-  created () {
-  },
-  methods: {
-  },
-  data () {
-    return {
-    }
-  },
   computed: {
     roleIcon () {
       return '/static/roleIcons/' + this.roleName + '.png'
