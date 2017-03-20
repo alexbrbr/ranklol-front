@@ -46,6 +46,11 @@
         {{this.results.errMessage}}
       </div>
       <div v-else>
+
+        <win-details
+         v-bind:champions="champions"
+         v-bind:win-details="winDetails">
+        </win-details>
         <div class="cards-list">
           <role-card
            v-bind:role-name="mostPlayedRole"
@@ -80,14 +85,6 @@
 </template>
 
 <script>
-import axios from 'axios'
-import listService from '../services/listService'
-
-import RoleCard from './RoleCard'
-import DayCard from './DayCard'
-import DayOfWeekCard from './DayOfWeekCard'
-import ChampionCard from './ChampionCard'
-
 let apiUrl = ''
 if (process.env.NODE_ENV === 'development') {
   apiUrl = 'http://localhost:4000/api'
@@ -95,12 +92,23 @@ if (process.env.NODE_ENV === 'development') {
   apiUrl = 'https://ranklol-server.herokuapp.com/api'
 }
 
+function fetchMatch (matchId) {
+  return axios.get(`${apiUrl}/match/${matchId}`)
+}
 function fetchSummoner (summonerName) {
   return axios.get(`${apiUrl}/summoner/${summonerName}`)
 }
 function fetchChampions () {
   return axios.get(`${apiUrl}/champions`) // eslint-disable-line
 }
+
+import axios from 'axios'
+import listService from '../services/listService'
+import RoleCard from './RoleCard'
+import DayCard from './DayCard'
+import DayOfWeekCard from './DayOfWeekCard'
+import ChampionCard from './ChampionCard'
+import WinDetails from './WinDetails'
 export default {
   name: 'hello',
   created () {
@@ -112,18 +120,37 @@ export default {
     RoleCard,
     DayCard,
     ChampionCard,
-    DayOfWeekCard
+    DayOfWeekCard,
+    WinDetails
   },
   methods: {
+    setMatchDetail (detail) {
+      this.winDetails = this.winDetails.concat(detail)
+    },
     loadSummonerData (name) {
       if (this.loading) {
         return
       }
       this.loading = true
+      this.winDetails = []
       fetchSummoner(name)
         .then(results => {
           this.results = results.data
           this.loading = false
+        })
+        .then(() => {
+          const summonerName = this.summonerName
+          const setMatchDetail = this.setMatchDetail
+          this.results.matchIds.forEach(matchId => {
+            fetchMatch(matchId)
+              .then(matchSummary => {
+                this.results.matchIds.map(oldMatchId => {
+                  if (oldMatchId !== matchId) { return matchId }
+                  const onlyMe = matchSummary.data.filter(matchData => matchData.summonerName === summonerName)
+                  setMatchDetail(onlyMe)
+                })
+              })
+          })
         })
         .catch(err => {
           this.results = err.response.data
@@ -135,7 +162,8 @@ export default {
     return {
       results: {},
       summonerName: '',
-      loading: false
+      loading: false,
+      winDetails: []
     }
   },
   computed: {
