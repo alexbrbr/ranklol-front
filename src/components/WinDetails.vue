@@ -21,7 +21,7 @@
           <md-table-cell>{{ winStat.number }}</md-table-cell>
           <md-table-cell>{{ winStat.win }}</md-table-cell>
           <md-table-cell>{{ winStat.loose }}</md-table-cell>
-          <md-table-cell>{{ (winStat.win / winStat.number) * 100 }}%</md-table-cell>
+          <md-table-cell>{{ Math.round((winStat.win / winStat.number) * 100) }}%</md-table-cell>
         </md-table-row>
       </md-table-body>
     </md-table>

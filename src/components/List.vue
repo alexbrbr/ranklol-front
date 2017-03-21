@@ -55,17 +55,17 @@
           <role-card
            v-bind:role-name="mostPlayedRole"
            v-bind:games-number-in-role="numberOfMostPlayedRole"
-           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+           v-bind:total-games-number="totalGamesNumber">
           </role-card>
           <day-card
            v-bind:day-name="mostPlayedDay"
            v-bind:games-number-in-day="numberOfMostPlayedDay"
-           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+           v-bind:total-games-number="totalGamesNumber">
           </day-card>
           <day-of-week-card
            v-bind:day-of-week-name="mostPlayedDayOfWeek"
            v-bind:games-number-in-day-of-week="numberOfMostPlayedDayOfWeek"
-           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+           v-bind:total-games-number="totalGamesNumber">
           </day-of-week-card>
           <champion-card
            v-for="(champion, index) in championsOrdered"
@@ -73,7 +73,7 @@
            v-bind:games-number-for-champion="champion.numberOfTimesPlayed"
            v-bind:champions="champions"
            v-bind:index="index"
-           v-bind:total-games-number="results.matchIds && results.matchIds.length">
+           v-bind:total-games-number="totalGamesNumber">
          </champion-card>
        </div>
       </div>
@@ -136,21 +136,21 @@ export default {
       fetchSummoner(name)
         .then(results => {
           this.results = results.data
+          this.totalGamesNumber = results.data.matchIds && results.data.matchIds.length
           this.loading = false
         })
         .then(() => {
-          const summonerName = this.summonerName
           const setMatchDetail = this.setMatchDetail
-          this.results.matchIds.forEach(matchId => {
+          const matchIds = this.results.matchIds
+          var interval = setInterval(function () {
+            const matchId = matchIds.shift()
             fetchMatch(matchId)
               .then(matchSummary => {
-                this.results.matchIds.map(oldMatchId => {
-                  if (oldMatchId !== matchId) { return matchId }
-                  const onlyMe = matchSummary.data.filter(matchData => matchData.summonerName === summonerName)
-                  setMatchDetail(onlyMe)
-                })
+                const onlyMe = matchSummary.data.filter(matchData => matchData.summonerName === name)
+                setMatchDetail(onlyMe)
+                if (!matchIds.length) clearInterval(interval)
               })
-          })
+          }, 150)
         })
         .catch(err => {
           this.results = err.response.data
@@ -163,7 +163,8 @@ export default {
       results: {},
       summonerName: '',
       loading: false,
-      winDetails: []
+      winDetails: [],
+      totalGamesNumber: 0
     }
   },
   computed: {
