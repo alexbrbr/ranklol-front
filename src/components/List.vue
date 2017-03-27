@@ -46,11 +46,6 @@
         {{this.results.errMessage}}
       </div>
       <div v-else>
-
-        <win-details
-         v-bind:champions="champions"
-         v-bind:win-details="winDetails">
-        </win-details>
         <div class="cards-list">
           <role-card
            v-bind:role-name="mostPlayedRole"
@@ -76,6 +71,10 @@
            v-bind:total-games-number="totalGamesNumber">
          </champion-card>
        </div>
+       <win-details
+        v-bind:champions="champions"
+        v-bind:win-details="winDetails">
+       </win-details>
       </div>
     </div>
     <div class="footer">

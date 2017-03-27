@@ -1,31 +1,57 @@
 <template>
-  <md-card class="table-card">
-    <md-table>
-      <md-table-header>
-        <md-table-row>
-          <md-table-head>Wins by champion</md-table-head>
-          <md-table-head md-numeric>Games</md-table-head>
-          <md-table-head md-numeric>Win</md-table-head>
-          <md-table-head md-numeric>Loose</md-table-head>
-          <md-table-head md-numeric>Percentage</md-table-head>
-        </md-table-row>
-      </md-table-header>
-      <md-table-body class="table-body">
-        <md-table-row v-for="winStat in winDetailsByChampions">
-          <md-table-cell>
-            <md-avatar class="md-large">
-              <img :src="championImageUrls.find(championName => championName.championId === winStat.championId).url">
-            </md-avatar>
-            {{championNames.find(championName => championName.championId === winStat.championId).name}}
-          </md-table-cell>
-          <md-table-cell>{{ winStat.number }}</md-table-cell>
-          <md-table-cell>{{ winStat.win }}</md-table-cell>
-          <md-table-cell>{{ winStat.loose }}</md-table-cell>
-          <md-table-cell>{{ Math.round((winStat.win / winStat.number) * 100) }}%</md-table-cell>
-        </md-table-row>
-      </md-table-body>
-    </md-table>
-  </md-card>
+  <div class="table-card">
+    <md-card>
+      <md-table>
+        <md-table-header>
+          <md-table-row>
+            <md-table-head>Wins by champion</md-table-head>
+            <md-table-head md-numeric>Games</md-table-head>
+            <md-table-head md-numeric>Win</md-table-head>
+            <md-table-head md-numeric>Loose</md-table-head>
+            <md-table-head md-numeric>Percentage</md-table-head>
+          </md-table-row>
+        </md-table-header>
+        <md-table-body class="table-body">
+          <md-table-row v-for="winStat in winDetailsByChampions">
+            <md-table-cell>
+              <md-avatar class="md-large">
+                <img :src="championImageUrls.find(championName => championName.championId === winStat.championId).url">
+              </md-avatar>
+              {{championNames.find(championName => championName.championId === winStat.championId).name}}
+            </md-table-cell>
+            <md-table-cell>{{ winStat.number }}</md-table-cell>
+            <md-table-cell>{{ winStat.win }}</md-table-cell>
+            <md-table-cell>{{ winStat.loose }}</md-table-cell>
+            <md-table-cell>{{ Math.round((winStat.win / winStat.number) * 100) }}%</md-table-cell>
+          </md-table-row>
+        </md-table-body>
+      </md-table>
+    </md-card>
+    <md-card>
+      <md-table>
+        <md-table-header>
+          <md-table-row>
+            <md-table-head>Wins by roles</md-table-head>
+            <md-table-head md-numeric>Games</md-table-head>
+            <md-table-head md-numeric>Win</md-table-head>
+            <md-table-head md-numeric>Loose</md-table-head>
+            <md-table-head md-numeric>Percentage</md-table-head>
+          </md-table-row>
+        </md-table-header>
+        <md-table-body class="table-body">
+          <md-table-row v-for="winStat in winDetailsByRoles">
+            <md-table-cell>
+              {{winStat.role}}
+            </md-table-cell>
+            <md-table-cell>{{ winStat.number }}</md-table-cell>
+            <md-table-cell>{{ winStat.win }}</md-table-cell>
+            <md-table-cell>{{ winStat.loose }}</md-table-cell>
+            <md-table-cell>{{ Math.round((winStat.win / winStat.number) * 100) }}%</md-table-cell>
+          </md-table-row>
+        </md-table-body>
+      </md-table>
+    </md-card>
+  </div>
 </template>
 
 <script>
@@ -39,6 +65,9 @@ export default {
   computed: {
     winDetailsByChampions: function () {
       return winService.groupByChampions(this.winDetails)
+    },
+    winDetailsByRoles: function () {
+      return winService.groupByRoles(this.winDetails)
     },
     championImageUrls: function () {
       const championList = this.champions
