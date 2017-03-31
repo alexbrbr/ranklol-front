@@ -71,8 +71,12 @@
           <tbody class="table-body">
             <tr
              class="table_row"
+             v-if="winStat.role !== 'Unknown role'"
              v-for="winStat in winDetailsByRoles">
               <td class="table_champ">
+                <md-avatar class="md-large">
+                  <img :src="'/static/roleIcons/' + winStat.role + '.png'">
+                </md-avatar>
                 {{winStat.role}}
               </td>
               <td class="table_number">
@@ -168,7 +172,8 @@ export default {
   flex: 1;
 }
 .table-card {
-  margin: 1rem;
+  max-width: 45rem;
+  margin: 1rem auto;
 }
 .roles {
   margin-top: 1rem;

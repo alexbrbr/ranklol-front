@@ -1,9 +1,9 @@
 function findRole (winDetail) {
   switch (`${winDetail.role}_${winDetail.lane}`) {
     case 'SOLO_MIDDLE':
-      return 'Solo Mid'
+      return 'Mid Lane'
     case 'SOLO_TOP':
-      return 'Solo Top'
+      return 'Top Lane'
     case 'NONE_JUNGLE':
       return 'Jungler'
     case 'DUO_CARRY_BOTTOM':
