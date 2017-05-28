@@ -95,6 +95,76 @@
           </tbody>
         </table>
     </md-card>
+
+    <!-- Against -->
+    <md-input-container class="summoner-name-input">
+      <label>Choose enemy id</label>
+      <md-input v-model="ennemyChampId"> </md-input>
+    </md-input-container>
+    <button v-on:click="getWinDetailAgainst(ennemyChampId)"></button>
+    <md-card class="roles">
+      <md-card>
+        <table class="table">
+          <thead class="table_header">
+            <tr class="table_row">
+              <th class="table_champ">Wins Against champ {{ennemyChamp && ennemyChamp.name}}</th>
+              <th class="table_number">
+               Games
+             </th>
+              <th class="table_number">
+                Win
+              </th>
+              <th class="table_number">
+                Loose
+              </th>
+              <th class="table_number">
+                Percentage
+              </th>
+            </tr>
+          </thead>
+          <tbody class="table-body">
+            <tr
+             class="table_row"
+             v-if="ennemyChamp && ennemyChamp.name">
+              <td class="table_champ">
+                <md-avatar class="md-large avatar-table">
+                  <img :src="ennemyChamp && ennemyChamp.image">
+                </md-avatar>
+                <div class="avatar-name">
+                  {{ennemyChamp && ennemyChamp.name}}
+                </div>
+              </td>
+              <td class="table_number">
+                {{ winDetailAgainst.number }}
+              </td>
+              <td class="table_avatars">
+                {{ winDetailAgainst.win }}
+                <div
+                 v-for="winChampId in winDetailAgainst.myChampAgainst.win"
+                 class="avatar-name">
+                  <md-avatar class="md-large avatar-table">
+                    <img :src="champions.find(champ => champ.id === parseInt(winChampId, 10)).image">
+                  </md-avatar>
+                </div>
+              </td>
+              <td class="table_avatars">
+                {{ winDetailAgainst.loose }}
+                <div
+                 v-for="looseChampId in winDetailAgainst.myChampAgainst.loose"
+                 class="avatar-name">
+                  <md-avatar class="md-large avatar-table">
+                    <img :src="champions.find(champ => champ.id === parseInt(looseChampId, 10)).image">
+                  </md-avatar>
+                </div>
+              </td>
+
+              <td class="table_number">
+                {{ Math.round((winDetailAgainst.win / winDetailAgainst.number) * 100) }}%
+              </td>
+            </tr>
+          </tbody>
+        </table>
+    </md-card>
   </div>
 </template>
 
@@ -104,8 +174,27 @@ import winService from '../services/winService'
 export default {
   props: [
     'champions',
-    'winDetails'
+    'winDetails',
+    'wholeWinDetails',
+    'summonerName'
   ],
+  data () {
+    return {
+      ennemyChamp: {
+        name: '',
+        id: '',
+        image: ''
+      },
+      ennemyChampId: 0,
+      winDetailAgainst: {}
+    }
+  },
+  methods: {
+    getWinDetailAgainst: function (champId) {
+      this.winDetailAgainst = winService.findMatchesAgainst(this.wholeWinDetails, this.summonerName, parseInt(champId, 10))
+      this.ennemyChamp = this.champions.find(champ => champ.id === parseInt(champId, 10))
+    }
+  },
   computed: {
     winDetailsByChampions: function () {
       return winService.groupByChampions(this.winDetails)
@@ -154,6 +243,13 @@ export default {
 }
 .table_number {
   display: flex;
+  flex: 0 0 6rem;
+  align-items: center;
+  justify-content: center;
+}
+.table_avatars {
+  display: flex;
+  flex-direction: column;
   flex: 0 0 6rem;
   align-items: center;
   justify-content: center;

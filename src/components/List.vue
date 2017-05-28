@@ -73,7 +73,9 @@
        </div> -->
        <win-details
         v-bind:champions="champions"
-        v-bind:win-details="winDetails">
+        v-bind:summoner-name="summonerName"
+        v-bind:win-details="winDetails"
+        v-bind:whole-win-details="wholeWinDetails">
        </win-details>
       </div>
     </div>
@@ -123,15 +125,20 @@ export default {
     WinDetails
   },
   methods: {
-    setMatchDetail (detail) {
+    setMyMatchDetail (detail) {
       this.winDetails = this.winDetails.concat(detail)
     },
+    setMatchDetail (fullDetail) {
+      this.wholeWinDetails.push(fullDetail)
+    },
     loadSummonerData (name) {
+      this.summonerName = name
       if (this.loading) {
         return
       }
       this.loading = true
       this.winDetails = []
+      this.wholeWinDetails = []
       fetchSummoner(name)
         .then(results => {
           this.results = results.data
@@ -139,6 +146,7 @@ export default {
           this.loading = false
         })
         .then(() => {
+          const setMyMatchDetail = this.setMyMatchDetail
           const setMatchDetail = this.setMatchDetail
           const matchIds = this.results.matchIds
           var interval = setInterval(function () {
@@ -146,7 +154,8 @@ export default {
             fetchMatch(matchId)
               .then(matchSummary => {
                 const onlyMe = matchSummary.data.filter(matchData => matchData.summonerName === name)
-                setMatchDetail(onlyMe)
+                setMyMatchDetail(onlyMe)
+                setMatchDetail(matchSummary.data)
                 if (!matchIds.length) clearInterval(interval)
               })
           }, 150)
@@ -163,6 +172,7 @@ export default {
       summonerName: '',
       loading: false,
       winDetails: [],
+      wholeWinDetails: [],
       totalGamesNumber: 0
     }
   },

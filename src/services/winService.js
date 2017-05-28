@@ -2,6 +2,8 @@ function findRole (winDetail) {
   switch (`${winDetail.role}_${winDetail.lane}`) {
     case 'SOLO_MIDDLE':
       return 'Mid Lane'
+    case 'NONE_MIDDLE':
+      return 'Mid Lane'
     case 'SOLO_TOP':
       return 'Top Lane'
     case 'NONE_JUNGLE':
@@ -10,6 +12,12 @@ function findRole (winDetail) {
       return 'AD Carry'
     case 'DUO_SUPPORT_BOTTOM':
       return 'Support'
+    case 'DUO_BOTTOM':
+      return 'AD Carry'
+    case 'SOLO_BOTTOM':
+      return 'AD Carry'
+    case 'NONE_BOTTOM':
+      return 'AD Carry'
     default:
       console.log(`${winDetail.role}_${winDetail.lane}`)
       return 'Unknown role'
@@ -59,5 +67,33 @@ export default {
         }
         return acc
       }, [])
+  },
+  findMatchesAgainst (wholeWinDetails, summonerName, championId) {
+    return wholeWinDetails
+      .reduce((acc, wholeWinDetail) => {
+        const myDetail = wholeWinDetail.find(playerWinDetail => playerWinDetail.summonerName === summonerName)
+        const ennemiesDetail = wholeWinDetail.filter(playerWinDetail => playerWinDetail.winner !== myDetail.winner)
+        const ennemiesHaveChamp = ennemiesDetail.some(ennemyDetail => ennemyDetail.championId === championId)
+        if (!ennemiesHaveChamp) {
+          return acc
+        }
+        if (myDetail.winner) {
+          acc.win += 1
+          acc.myChampAgainst.win.push(myDetail.championId)
+        } else {
+          acc.loose += 1
+          acc.myChampAgainst.loose.push(myDetail.championId)
+        }
+        acc.number += 1
+        return acc
+      }, {
+        win: 0,
+        loose: 0,
+        number: 0,
+        myChampAgainst: {
+          win: [],
+          loose: []
+        }
+      })
   }
 }
