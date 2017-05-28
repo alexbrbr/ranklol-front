@@ -98,10 +98,13 @@
 
     <!-- Against -->
     <md-input-container class="summoner-name-input">
-      <label>Choose enemy id</label>
-      <md-input v-model="ennemyChampId"> </md-input>
+      <label>Choose enemy champion name</label>
+      <md-input v-model="enemyChampName"> </md-input>
     </md-input-container>
-    <button v-on:click="getWinDetailAgainst(ennemyChampId)"></button>
+    <md-button class="md-raised md-primary"
+     v-on:click="getWinDetailAgainst(enemyChampName)">
+     Load games against {{enemyChampName}}
+    </md-button>
     <md-card class="roles">
       <md-card>
         <table class="table">
@@ -185,14 +188,15 @@ export default {
         id: '',
         image: ''
       },
-      ennemyChampId: 0,
+      enemyChampName: 0,
       winDetailAgainst: {}
     }
   },
   methods: {
-    getWinDetailAgainst: function (champId) {
-      this.winDetailAgainst = winService.findMatchesAgainst(this.wholeWinDetails, this.summonerName, parseInt(champId, 10))
-      this.ennemyChamp = this.champions.find(champ => champ.id === parseInt(champId, 10))
+    getWinDetailAgainst: function (champName) {
+      const champion = this.champions.find(champ => champ.name === champName)
+      this.winDetailAgainst = winService.findMatchesAgainst(this.wholeWinDetails, this.summonerName, champion.id)
+      this.ennemyChamp = champion
     }
   },
   computed: {

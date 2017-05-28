@@ -27,6 +27,10 @@
              UOL Vizicsacsi
             </md-button>
             <md-button class="md-raised md-primary"
+             v-on:click="loadSummonerData('MSF Hans sama1')">
+              MSF Hans Sama
+            </md-button>
+            <md-button class="md-raised md-primary"
              v-on:click="loadSummonerData('FNC Rekkles')">
              FNC Rekkles
             </md-button>
