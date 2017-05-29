@@ -4,6 +4,10 @@ function findRole (winDetail) {
       return 'Mid Lane'
     case 'NONE_MIDDLE':
       return 'Mid Lane'
+    case 'DUO_CARRY_MIDDLE':
+      return 'Mid Lane'
+    case 'DUO_SUPPORT_MIDDLE':
+      return 'Mid Lane'
     case 'SOLO_TOP':
       return 'Top Lane'
     case 'NONE_JUNGLE':
@@ -26,8 +30,7 @@ function findRole (winDetail) {
 
 export default {
   groupByChampions (winDetails) {
-    console.log(winDetails)
-    return winDetails
+    const groupedByChamp = winDetails
       .reduce((acc, winDetail) => {
         const index = acc
           .findIndex(accWin => accWin.championId === winDetail.championId)
@@ -46,6 +49,8 @@ export default {
         }
         return acc
       }, [])
+      .sort((a, b) => b.number - a.number)
+    return groupedByChamp
   },
   groupByRoles (winDetails) {
     return winDetails
@@ -68,6 +73,7 @@ export default {
         }
         return acc
       }, [])
+      .sort((a, b) => b.number - a.number)
   },
   findMatchesAgainst (wholeWinDetails, summonerName, championId) {
     return wholeWinDetails

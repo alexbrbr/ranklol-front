@@ -22,7 +22,8 @@
         <tbody class="table-body">
           <tr
            class="table_row"
-           v-for="winStat in winDetailsByChampions">
+           v-for="winStat in winDetailsByChampions"
+           v-bind:key="winStat.championId">
             <td class="table_champ">
               <md-avatar class="md-large avatar-table">
                 <img :src="championImageUrls.find(championName => championName.championId === winStat.championId).url">
