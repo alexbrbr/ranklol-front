@@ -28,6 +28,12 @@ function findRole (winDetail) {
   }
 }
 
+function hasPlayedAgainst (gameDetail, summonerName, championId) {
+  const myDetail = gameDetail.find(playerWinDetail => playerWinDetail.summonerName === summonerName)
+  const ennemiesDetail = gameDetail.filter(playerWinDetail => playerWinDetail.winner !== myDetail.winner)
+  return ennemiesDetail.some(ennemyDetail => ennemyDetail.championId === championId)
+}
+
 export default {
   groupByChampions (winDetails) {
     const groupedByChamp = winDetails
@@ -75,32 +81,44 @@ export default {
       }, [])
       .sort((a, b) => b.number - a.number)
   },
-  findMatchesAgainst (wholeWinDetails, summonerName, championId) {
-    return wholeWinDetails
-      .reduce((acc, wholeWinDetail) => {
-        const myDetail = wholeWinDetail.find(playerWinDetail => playerWinDetail.summonerName === summonerName)
-        const ennemiesDetail = wholeWinDetail.filter(playerWinDetail => playerWinDetail.winner !== myDetail.winner)
-        const ennemiesHaveChamp = ennemiesDetail.some(ennemyDetail => ennemyDetail.championId === championId)
-        if (!ennemiesHaveChamp) {
+  findMatchesAgainst (wholeWinDetails, summonerName, champions) {
+    const championsAsCounters =
+      champions.reduce((acc, champion) => {
+        const championId = champion.id
+        const hasPlayedAgainstChamp = wholeWinDetails.some(wholeWinDetail => hasPlayedAgainst(wholeWinDetail, summonerName, championId))
+        if (!hasPlayedAgainstChamp) {
           return acc
         }
-        if (myDetail.winner) {
-          acc.win += 1
-          acc.myChampAgainst.win.push(myDetail.championId)
-        } else {
-          acc.loose += 1
-          acc.myChampAgainst.loose.push(myDetail.championId)
+        if (!acc || !acc[championId]) {
+          acc[championId] = {
+            win: 0,
+            loose: 0,
+            number: 0,
+            myChampAgainst: {
+              win: [],
+              loose: []
+            },
+            name: champion.name,
+            image: champion.image
+          }
         }
-        acc.number += 1
+        wholeWinDetails.forEach(wholeWinDetail => {
+          const myWinDetail = wholeWinDetail.find(playerWinDetail => playerWinDetail.summonerName === summonerName)
+          const ennemiesDetail = wholeWinDetail.filter(playerWinDetail => playerWinDetail.winner !== myWinDetail.winner)
+          const ennemiesHaveChamp = ennemiesDetail.some(ennemyDetail => ennemyDetail.championId === championId)
+          if (!ennemiesHaveChamp) {
+          } else if (myWinDetail.winner) {
+            acc[championId].win += 1
+            acc[championId].number += 1
+            acc[championId].myChampAgainst.win.push(myWinDetail.championId)
+          } else {
+            acc[championId].loose += 1
+            acc[championId].number += 1
+            acc[championId].myChampAgainst.loose.push(myWinDetail.championId)
+          }
+        })
         return acc
-      }, {
-        win: 0,
-        loose: 0,
-        number: 0,
-        myChampAgainst: {
-          win: [],
-          loose: []
-        }
-      })
+      }, {})
+    return championsAsCounters
   }
 }

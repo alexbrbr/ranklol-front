@@ -128,23 +128,23 @@
           </thead>
           <tbody class="table-body">
             <tr
-             class="table_row"
-             v-if="ennemyChamp && ennemyChamp.name">
+             v-for="winStatAgainst in winDetailAgainst"
+             class="table_row">
               <td class="table_champ">
                 <md-avatar class="md-large avatar-table">
-                  <img :src="ennemyChamp && ennemyChamp.image">
+                  <img :src="winStatAgainst.image">
                 </md-avatar>
                 <div class="avatar-name">
-                  {{ennemyChamp && ennemyChamp.name}}
+                  {{winStatAgainst.name}}
                 </div>
               </td>
               <td class="table_number">
-                {{ winDetailAgainst.number }}
+                {{ winStatAgainst.number }}
               </td>
               <td class="table_avatars">
-                {{ winDetailAgainst.win }}
+                {{ winStatAgainst.win }}
                 <div
-                 v-for="winChampId in winDetailAgainst.myChampAgainst.win"
+                 v-for="winChampId in winStatAgainst.myChampAgainst.win"
                  class="avatar-name">
                   <md-avatar class="md-large avatar-table">
                     <img :src="champions.find(champ => champ.id === parseInt(winChampId, 10)).image">
@@ -152,9 +152,9 @@
                 </div>
               </td>
               <td class="table_avatars">
-                {{ winDetailAgainst.loose }}
+                {{ winStatAgainst.loose }}
                 <div
-                 v-for="looseChampId in winDetailAgainst.myChampAgainst.loose"
+                 v-for="looseChampId in winStatAgainst.myChampAgainst.loose"
                  class="avatar-name">
                   <md-avatar class="md-large avatar-table">
                     <img :src="champions.find(champ => champ.id === parseInt(looseChampId, 10)).image">
@@ -163,7 +163,7 @@
               </td>
 
               <td class="table_number">
-                {{ Math.round((winDetailAgainst.win / winDetailAgainst.number) * 100) }}%
+                {{ Math.round((winStatAgainst.win / winStatAgainst.number) * 100) }}%
               </td>
             </tr>
           </tbody>
@@ -195,9 +195,7 @@ export default {
   },
   methods: {
     getWinDetailAgainst: function (champName) {
-      const champion = this.champions.find(champ => champ.name === champName)
-      this.winDetailAgainst = winService.findMatchesAgainst(this.wholeWinDetails, this.summonerName, champion.id)
-      this.ennemyChamp = champion
+      this.winDetailAgainst = winService.findMatchesAgainst(this.wholeWinDetails, this.summonerName, this.champions)
     }
   },
   computed: {
