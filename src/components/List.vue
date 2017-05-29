@@ -23,6 +23,10 @@
           Or look at the stats from one of these players :
           <div>
             <md-button class="md-raised md-primary"
+             v-on:click="loadSummonerData('Hide on bush', 'kr')">
+              Hide on Bush
+            </md-button>
+            <md-button class="md-raised md-primary"
              v-on:click="loadSummonerData('UOL Vizicsacsi')">
              UOL Vizicsacsi
             </md-button>
@@ -100,8 +104,8 @@ if (process.env.NODE_ENV === 'development') {
 function fetchMatch (matchId) {
   return axios.get(`${apiUrl}/match/${matchId}`)
 }
-function fetchSummoner (summonerName) {
-  return axios.get(`${apiUrl}/summoner/${summonerName}`)
+function fetchSummoner (summonerName, region) {
+  return axios.get(`${apiUrl}/summoner/${summonerName}?region=${region}`)
 }
 function fetchChampions () {
   return axios.get(`${apiUrl}/champions`) // eslint-disable-line
@@ -135,7 +139,7 @@ export default {
     setMatchDetail (fullDetail) {
       this.wholeWinDetails.push(fullDetail)
     },
-    loadSummonerData (name) {
+    loadSummonerData (name, region = 'EUW') {
       this.summonerName = name
       if (this.loading) {
         return
@@ -143,7 +147,7 @@ export default {
       this.loading = true
       this.winDetails = []
       this.wholeWinDetails = []
-      fetchSummoner(name)
+      fetchSummoner(name, region)
         .then(results => {
           this.results = results.data
           this.totalGamesNumber = results.data.matchIds && results.data.matchIds.length

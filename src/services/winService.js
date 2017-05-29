@@ -26,6 +26,7 @@ function findRole (winDetail) {
 
 export default {
   groupByChampions (winDetails) {
+    console.log(winDetails)
     return winDetails
       .reduce((acc, winDetail) => {
         const index = acc
