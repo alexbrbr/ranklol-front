@@ -1,175 +1,180 @@
 <template>
-  <div class="table-card">
-    <md-card>
-      <table class="table">
-        <thead class="table_header">
-          <tr class="table_row">
-            <th class="table_champ">Wins by champion</th>
-            <th class="table_number">
-             Games
-           </th>
-            <th class="table_number">
-              Win
-            </th>
-            <th class="table_number">
-              Loose
-            </th>
-            <th class="table_number">
-              Percentage
-            </th>
-          </tr>
-        </thead>
-        <tbody class="table-body">
-          <tr
-           class="table_row"
-           v-for="winStat in winDetailsByChampions"
-           v-bind:key="winStat.championId">
-            <td class="table_champ">
-              <md-avatar class="md-large avatar-table">
-                <img :src="championImageUrls.find(championName => championName.championId === winStat.championId).url">
-              </md-avatar>
-              <div class="avatar-name">
-                {{championNames.find(championName => championName.championId === winStat.championId).name}}
-              </div>
-            </td>
-            <td class="table_number">
-              {{ winStat.number }}
-            </td>
-            <td class="table_number">
-              {{ winStat.win }}
-            </td>
-            <td class="table_number">
-              {{ winStat.loose }}
-            </td>
-            <td class="table_number">
-              {{ Math.round((winStat.win / winStat.number) * 100) }}%
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </md-card>
-
-    <md-card class="roles">
-      <md-card>
-        <table class="table">
-          <thead class="table_header">
-            <tr class="table_row">
-              <th class="table_champ">Wins by Role</th>
-              <th class="table_number">
-               Games
-             </th>
-              <th class="table_number">
-                Win
-              </th>
-              <th class="table_number">
-                Loose
-              </th>
-              <th class="table_number">
-                Percentage
-              </th>
-            </tr>
-          </thead>
-          <tbody class="table-body">
-            <tr
-             class="table_row"
-             v-if="winStat.role !== 'Unknown role'"
-             v-for="winStat in winDetailsByRoles">
-              <td class="table_champ">
-                <md-avatar class="md-large">
-                  <img :src="'/static/roleIcons/' + winStat.role + '.png'">
-                </md-avatar>
-                {{winStat.role}}
-              </td>
-              <td class="table_number">
-                {{ winStat.number }}
-              </td>
-              <td class="table_number">
-                {{ winStat.win }}
-              </td>
-              <td class="table_number">
-                {{ winStat.loose }}
-              </td>
-              <td class="table_number">
-                {{ Math.round((winStat.win / winStat.number) * 100) }}%
-              </td>
-            </tr>
-          </tbody>
-        </table>
-    </md-card>
-
-    <!-- Against -->
-    <md-input-container class="summoner-name-input">
-      <label>Choose enemy champion name</label>
-      <md-input v-model="enemyChampName"> </md-input>
-    </md-input-container>
-    <md-button class="md-raised md-primary"
-     v-on:click="getWinDetailAgainst(enemyChampName)">
-     Load games against {{enemyChampName}}
-    </md-button>
-    <md-card class="roles">
-      <md-card>
-        <table class="table">
-          <thead class="table_header">
-            <tr class="table_row">
-              <th class="table_champ">Wins Against champ {{ennemyChamp && ennemyChamp.name}}</th>
-              <th class="table_number">
-               Games
-             </th>
-              <th class="table_number">
-                Win
-              </th>
-              <th class="table_number">
-                Loose
-              </th>
-              <th class="table_number">
-                Percentage
-              </th>
-            </tr>
-          </thead>
-          <tbody class="table-body">
-            <tr
-             v-for="winStatAgainst in winDetailAgainst"
-             class="table_row">
-              <td class="table_champ">
-                <md-avatar class="md-large avatar-table">
-                  <img :src="winStatAgainst.image">
-                </md-avatar>
-                <div class="avatar-name">
-                  {{winStatAgainst.name}}
-                </div>
-              </td>
-              <td class="table_number">
-                {{ winStatAgainst.number }}
-              </td>
-              <td class="table_avatars">
-                {{ winStatAgainst.win }}
-                <div
-                 v-for="winChampId in winStatAgainst.myChampAgainst.win"
-                 class="avatar-name">
+  <md-tabs md-fixed>
+    <md-tab id="champions" md-label="Champions">
+      <div class="table-card">
+        <md-card>
+          <table class="table">
+            <thead class="table_header">
+              <tr class="table_row">
+                <th class="table_champ">Wins by champion</th>
+                <th class="table_number">
+                 Games
+               </th>
+                <th class="table_number">
+                  Win
+                </th>
+                <th class="table_number">
+                  Loose
+                </th>
+                <th class="table_number">
+                  Percentage
+                </th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr
+               class="table_row"
+               v-for="winStat in winDetailsByChampions"
+               v-bind:key="winStat.championId">
+                <td class="table_champ">
                   <md-avatar class="md-large avatar-table">
-                    <img :src="champions.find(champ => champ.id === parseInt(winChampId, 10)).image">
+                    <img :src="championImageUrls.find(championName => championName.championId === winStat.championId).url">
                   </md-avatar>
-                </div>
-              </td>
-              <td class="table_avatars">
-                {{ winStatAgainst.loose }}
-                <div
-                 v-for="looseChampId in winStatAgainst.myChampAgainst.loose"
-                 class="avatar-name">
-                  <md-avatar class="md-large avatar-table">
-                    <img :src="champions.find(champ => champ.id === parseInt(looseChampId, 10)).image">
-                  </md-avatar>
-                </div>
-              </td>
+                  <div class="avatar-name">
+                    {{championNames.find(championName => championName.championId === winStat.championId).name}}
+                  </div>
+                </td>
+                <td class="table_number">
+                  {{ winStat.number }}
+                </td>
+                <td class="table_number">
+                  {{ winStat.win }}
+                </td>
+                <td class="table_number">
+                  {{ winStat.loose }}
+                </td>
+                <td class="table_number">
+                  {{ Math.round((winStat.win / winStat.number) * 100) }}%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </md-card>
+    </md-tab>
 
-              <td class="table_number">
-                {{ Math.round((winStatAgainst.win / winStatAgainst.number) * 100) }}%
-              </td>
-            </tr>
-          </tbody>
-        </table>
-    </md-card>
-  </div>
+    <md-tab id="roles" md-label="Roles">
+      <md-card class="roles">
+          <table class="table">
+            <thead class="table_header">
+              <tr class="table_row">
+                <th class="table_champ">Wins by Role</th>
+                <th class="table_number">
+                 Games
+               </th>
+                <th class="table_number">
+                  Win
+                </th>
+                <th class="table_number">
+                  Loose
+                </th>
+                <th class="table_number">
+                  Percentage
+                </th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr
+               class="table_row"
+               v-if="winStat.role !== 'Unknown role'"
+               v-for="winStat in winDetailsByRoles">
+                <td class="table_champ">
+                  <md-avatar class="md-large">
+                    <img :src="'/static/roleIcons/' + winStat.role + '.png'">
+                  </md-avatar>
+                  {{winStat.role}}
+                </td>
+                <td class="table_number">
+                  {{ winStat.number }}
+                </td>
+                <td class="table_number">
+                  {{ winStat.win }}
+                </td>
+                <td class="table_number">
+                  {{ winStat.loose }}
+                </td>
+                <td class="table_number">
+                  {{ Math.round((winStat.win / winStat.number) * 100) }}%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </md-card>
+    </md-tab>
+
+    <md-tab id="counters" md-label="Counters">
+      <md-button class="md-raised md-primary"
+       v-on:click="getWinDetailAgainst()">
+       Load games against all champions
+      </md-button>
+      <md-card class="roles">
+        <md-card>
+          <table class="table">
+            <thead class="table_header">
+              <tr class="table_row">
+                <th class="table_champ">Wins Against champ {{ennemyChamp && ennemyChamp.name}}</th>
+                <th class="table_number">
+                 Games
+               </th>
+                <th class="table_number">
+                  Win
+                </th>
+                <th class="table_number">
+                  Loose
+                </th>
+                <th class="table_number">
+                  Percentage
+                </th>
+              </tr>
+            </thead>
+            <tbody class="table-body">
+              <tr
+               v-for="winStatAgainst in winDetailAgainst"
+               class="table_row">
+                <td class="table_champ">
+                  <md-avatar class="md-large avatar-table">
+                    <img :src="winStatAgainst.image">
+                  </md-avatar>
+                  <div class="avatar-name">
+                    {{winStatAgainst.name}}
+                  </div>
+                </td>
+                <td class="table_number">
+                  {{ winStatAgainst.number }}
+                </td>
+                <td class="table_avatars">
+                  {{ winStatAgainst.win }}
+                  <div
+                   v-for="winChampId in winStatAgainst.myChampAgainst.win"
+                   class="avatar-name">
+                    <md-avatar class="md-large avatar-table">
+                      <img :src="champions.find(champ => champ.id === parseInt(winChampId, 10)).image">
+                    </md-avatar>
+                  </div>
+                </td>
+                <td class="table_avatars">
+                  {{ winStatAgainst.loose }}
+                  <div
+                   v-for="looseChampId in winStatAgainst.myChampAgainst.loose"
+                   class="avatar-name">
+                    <md-avatar class="md-large avatar-table">
+                      <img :src="champions.find(champ => champ.id === parseInt(looseChampId, 10)).image">
+                    </md-avatar>
+                  </div>
+                </td>
+
+                <td class="table_number">
+                  {{ Math.round((winStatAgainst.win / winStatAgainst.number) * 100) }}%
+                </td>
+              </tr>
+            </tbody>
+          </table>
+      </md-card>
+    </md-tab>
+
+  </md-tabs>
+
+
+  <!-- </div> -->
 </template>
 
 <script>
@@ -194,7 +199,7 @@ export default {
     }
   },
   methods: {
-    getWinDetailAgainst: function (champName) {
+    getWinDetailAgainst: function () {
       this.winDetailAgainst = winService.findMatchesAgainst(this.wholeWinDetails, this.summonerName, this.champions)
     }
   },

@@ -217,7 +217,8 @@ export default {
     flex-direction: column;
   }
   .card-margin {
-    margin: 1rem;
+    max-width: 45rem;
+    margin: 1rem auto;
   }
 
   .summoner-name-input {

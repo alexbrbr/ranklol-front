@@ -12,7 +12,7 @@ Vue.material.registerTheme('ranklol', {
     color: 'red',
     hue: 900
   },
-  accent: 'indigo',
+  accent: 'deep-orange',
   warn: 'deep-orange',
   background: {
     color: 'grey',
