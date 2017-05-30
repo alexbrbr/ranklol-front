@@ -22,14 +22,19 @@
         <div class="summoner-choosing-container__examples">
           Or look at the stats from one of these players :
           <div>
-            <md-button class="md-raised md-primary"
-             v-on:click="loadSummonerData('Hide on bush', 'kr')">
-              Hide on Bush
-            </md-button>
-            <md-button class="md-raised md-primary"
-             v-on:click="loadSummonerData('UOL Vizicsacsi')">
-             UOL Vizicsacsi
-            </md-button>
+            <md-card>
+              Faker
+              <div class="player-picture picture--faker">
+              </div>
+              <div>
+                <img src="~assets/Kr.png"/>
+              </div>
+              Team SKT T1
+              <md-button class="md-raised md-primary load-button"
+               v-on:click="loadSummonerData('Hide on bush', 'kr')">
+                Load games
+              </md-button>
+            </md-card>
             <md-button class="md-raised md-primary"
              v-on:click="loadSummonerData('MSF Hans sama1')">
               MSF Hans Sama
@@ -250,5 +255,21 @@ export default {
   }
   .summoner-choosing-container__examples {
     flex: 1;
+  }
+
+  .load-button {
+    max-width: 10rem;
+    margin: 0.5rem auto;
+  }
+  .player-picture {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    margin: 0 auto;
+    background-position: center;
+    background-size: cover;
+  }
+  .picture--faker {
+    background-image: url('~assets/Faker.jpg');
   }
 </style>

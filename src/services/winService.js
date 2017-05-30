@@ -8,6 +8,8 @@ function findRole (winDetail) {
       return 'Mid Lane'
     case 'DUO_SUPPORT_MIDDLE':
       return 'Mid Lane'
+    case 'DUO_MIDDLE':
+      return 'Mid Lane'
     case 'SOLO_TOP':
       return 'Top Lane'
     case 'NONE_JUNGLE':
