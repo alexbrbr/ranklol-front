@@ -22,27 +22,45 @@
         <div class="summoner-choosing-container__examples">
           Or look at the stats from one of these players :
           <div>
-            <md-card>
+            <md-card class="player-description">
               Faker
               <div class="player-picture picture--faker">
               </div>
               <div>
                 <img src="~assets/Kr.png"/>
               </div>
-              Team SKT T1
+              Team: SKT T1
               <md-button class="md-raised md-primary load-button"
                v-on:click="loadSummonerData('Hide on bush', 'kr')">
                 Load games
               </md-button>
             </md-card>
-            <md-button class="md-raised md-primary"
-             v-on:click="loadSummonerData('MSF Hans sama1')">
-              MSF Hans Sama
-            </md-button>
-            <md-button class="md-raised md-primary"
-             v-on:click="loadSummonerData('FNC Rekkles')">
-             FNC Rekkles
-            </md-button>
+            <md-card class="player-description">
+              Hans Sama
+              <div class="player-picture picture--hans">
+              </div>
+              <div>
+                <img src="~assets/Fr.png"/>
+              </div>
+              Team: Misfits
+              <md-button class="md-raised md-primary load-button"
+               v-on:click="loadSummonerData('MSF Hans sama1')">
+                Load games
+              </md-button>
+            </md-card>
+            <md-card class="player-description">
+              Rekkles
+              <div class="player-picture picture--rekkles">
+              </div>
+              <div>
+                <img src="~assets/Se.png"/>
+              </div>
+              Team: Fnatic
+              <md-button class="md-raised md-primary load-button"
+               v-on:click="loadSummonerData('FNC Rekkles')">
+                Load games
+              </md-button>
+            </md-card>
           </div>
         </div>
       </md-card-content>
@@ -271,5 +289,14 @@ export default {
   }
   .picture--faker {
     background-image: url('~assets/Faker.jpg');
+  }
+  .picture--hans {
+    background-image: url('~assets/Hans-sama.jpg');
+  }
+  .picture--rekkles {
+    background-image: url('~assets/Rekkles.jpg');
+  }
+  .player-description {
+    margin: 0.5rem 0;
   }
 </style>
